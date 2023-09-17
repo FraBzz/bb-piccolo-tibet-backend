@@ -5,6 +5,7 @@ import { Pages } from './components/Pages'
 import { EventsList } from './components/EventsList'
 import NavBar from './components/Navbar'
 import { Login } from './components/Login'
+import { EventDetails } from './components/EventDetails'
 
 function App() {
   // const [count, setCount] = useState(0)
@@ -17,6 +18,7 @@ function App() {
     <Route path="/home" element={<Home />}/>
     <Route path="/pages" element={<Pages />}/>
     <Route path="/events" element={<EventsList />}/>
+    <Route path="/events/:eventId" element={<EventDetails />}/>
     <Route path="/login" element={<Login />}/>
 
     <Route path="*" element={<Navigate to="/login" />}></Route>
