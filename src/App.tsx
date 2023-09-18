@@ -3,7 +3,7 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import { Home } from './components/Home'
 import { Pages } from './components/Pages'
 import { EventsList } from './components/EventsList'
-import NavBar from './components/Navbar'
+import { NavbarSimple } from './components/Navbar'
 import { Login } from './components/Login'
 import { EventDetails } from './components/EventDetails'
 
@@ -12,7 +12,7 @@ function App() {
 
   return (
     <>
-    <NavBar/>
+    <NavbarSimple/>
     <div>
     <Routes>
     <Route path="/home" element={<Home />}/>
