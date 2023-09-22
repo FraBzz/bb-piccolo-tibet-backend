@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { EventModel } from '../models/event.model';
 import { responseModel } from '../models/response.model';
 import EventDataService from '../services/event.service';
@@ -25,6 +25,7 @@ export const EventDetails = () => {
   const [error, setError] = useState<string>('');
   const { eventId } = useParams<{ eventId: string }>();
   const eventService = new EventDataService();
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -69,6 +70,9 @@ export const EventDetails = () => {
         }
         setSuccess(res.message);
         setError("");
+        navigate("/events", {
+          state: res.message
+        })
       } catch (err: any) {
         console.log({ err });
         setSuccess("");

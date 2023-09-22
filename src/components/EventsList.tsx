@@ -1,6 +1,6 @@
 import { Button, Typography } from "@material-tailwind/react"
 import { useEffect, useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import { EventModel } from "../models/event.model"
 import EventDataService from "../services/event.service"
 import { ListWithAvatar } from "./List"
@@ -31,6 +31,7 @@ export const EventsList = () => {
     const [events, setEvents] = useState<EventModel[]>([])
     const [success, setSuccess] = useState<string>('');
     const [error, setError] = useState<string>('');
+    const {state} = useLocation()
 
     const handleMessage = (type: string, message: string) => {
         if (type === "success") {
@@ -55,6 +56,8 @@ export const EventsList = () => {
     // }
 
     useEffect(() => {
+        setSuccess("");
+        setError("");
 
         const e = async () => {
             // const post = await fetch("https://demo7.evoluzionetelematica.it/api.monhey.it/api/v1/User/login", {
@@ -70,6 +73,9 @@ export const EventsList = () => {
             const a = await eventService.getAll();
             setEvents(a);
         }
+
+        console.log({state})
+        if(state !== undefined) setSuccess(state);
 
         e();
     }, [])
