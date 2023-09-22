@@ -1,17 +1,19 @@
 import {
+    Button,
     Card,
     Input,
-    Button,
-    Typography,
     Textarea,
+    Typography,
 } from "@material-tailwind/react";
-import { FieldName } from "./EventDetails";
 import { ChangeEvent, FormEvent } from "react";
+import { FieldName } from "./EventDetails";
 
 export type formProps = {
-    title: string | undefined,
-    description: string | undefined,
-    id: string | undefined,
+    event: {
+        title: string | undefined,
+        description: string | undefined,
+        id: string | undefined,
+    }
     handleChange: (fieldName: FieldName) => (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void,
     handleSubmit: () => void,
     success: string,
@@ -22,12 +24,11 @@ export function EventForm(data: formProps) {
     const handleFormSubmit = (e: FormEvent) => {
         e.preventDefault();
         // Chiama la funzione di handle submit fornita come prop
-        console.log({ data })
         data.handleSubmit();
     };
 
     return (
-        <Card color="transparent" shadow={false} key={data.id}>
+        <Card color="transparent" shadow={false} key={data.event.id}>
             <Typography variant="h4" color="blue-gray">
                 Modifica evento
             </Typography>
@@ -36,8 +37,8 @@ export function EventForm(data: formProps) {
         </Typography> */}
             <form className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96" onSubmit={handleFormSubmit}>
                 <div className="mb-4 flex flex-col gap-6">
-                    <Input size="lg" label="Titolo" crossOrigin={undefined} value={data.title} onChange={(e) => data.handleChange('title')(e)} />
-                    <Textarea size="lg" label="Descrizione" value={data.description} onChange={(e) => data.handleChange('description')(e)} />
+                    <Input size="lg" label="Titolo" crossOrigin={undefined} value={data.event.title} onChange={(e) => data.handleChange('title')(e)} />
+                    <Textarea size="lg" label="Descrizione" value={data.event.description} onChange={(e) => data.handleChange('description')(e)} />
                     {/* <Input type="password" size="lg" label="Password" crossOrigin={undefined} onChange={handleChange}/> */}
                 </div>
                 {/* <Checkbox
@@ -56,7 +57,7 @@ export function EventForm(data: formProps) {
                     </Typography>}
                     containerProps={{ className: "-ml-2.5" }} crossOrigin={undefined}          /> */}
                 <Button className="mt-6" fullWidth type="submit">
-                    Modifica
+                     {data.event.id === undefined ?  'Nuovo' : 'Modifica'}
                 </Button>
                 {/* <Typography color="gray" className="mt-4 text-center font-normal">
             Already have an account?{" "}

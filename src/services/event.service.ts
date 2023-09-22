@@ -14,8 +14,29 @@ class EventDataService {
         return data;
     }
 
+    async delete(eventId: string | undefined): Promise<responseModel> {
+        const res = await fetch(`http://localhost:8080/api/events/${eventId}`, {
+            method: 'DELETE'
+        });
+        const data = await res.json();
+        return data;
+    }
+
+    async create(event: EventModel): Promise<responseModel> {
+        console.log("create", JSON.stringify(event))
+        const res = await fetch(`http://localhost:8080/api/events/`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+              },
+            body: JSON.stringify(event)
+        });
+        return res.json();
+    }
+
     async update(eventId: string | undefined, event: EventModel): Promise<responseModel> {
-        console.log(JSON.stringify(event))
+        console.log("update", JSON.stringify(event))
         const res = await fetch(`http://localhost:8080/api/events/${eventId}`, {
             method: 'PUT',
             headers: {

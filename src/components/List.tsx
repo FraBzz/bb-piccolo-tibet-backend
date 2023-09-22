@@ -1,37 +1,91 @@
 import {
-    List,
-    ListItem,
-    ListItemPrefix,
-    Avatar,
-    Card,
-    Typography,
-  } from "@material-tailwind/react";
+  Avatar,
+  Card,
+  IconButton,
+  List,
+  ListItem,
+  ListItemPrefix,
+  ListItemSuffix,
+  Typography
+} from "@material-tailwind/react";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { responseModel } from "../models/response.model";
+import EventDataService from "../services/event.service";
+import { DialogCustom } from "./DialogCustom";
 
-  export type listElement = {
-title: string,
-description: string,
-key: string
+export type listElement = {
+  title: string,
+  description: string,
+  id: string,
+  handleMessage: (type: string, message: string) => void,
+  handleList: (id: string) => void
+}
+
+function TrashIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      className="h-5 w-5"
+    >
+      <path
+        fillRule="evenodd"
+        d="M16.5 4.478v.227a48.816 48.816 0 013.878.512.75.75 0 11-.256 1.478l-.209-.035-1.005 13.07a3 3 0 01-2.991 2.77H8.084a3 3 0 01-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 01-.256-1.478A48.567 48.567 0 017.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 013.369 0c1.603.051 2.815 1.387 2.815 2.951zm-6.136-1.452a51.196 51.196 0 013.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 00-6 0v-.113c0-.794.609-1.428 1.364-1.452zm-.355 5.945a.75.75 0 10-1.5.058l.347 9a.75.75 0 101.499-.058l-.346-9zm5.48.058a.75.75 0 10-1.498-.058l-.347 9a.75.75 0 001.5.058l.345-9z"
+        clipRule="evenodd"
+      />
+    </svg>
+  );
+}
+
+export function ListWithAvatar(data: listElement) {
+  const eventService = new EventDataService();
+
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => setOpen(!open);
+
+  const handleDelete = async () => {
+    if(data.id !== undefined){
+      try {
+        handleOpen();
+        const res: responseModel = await eventService.delete(data.id);
+        data.handleMessage("success", res.message)
+        data.handleList(data.id)
+      } catch(err: any){
+        data.handleMessage("error", err.message)
+      }
+    }
   }
-   
-  export function ListWithAvatar({title, description, key}: listElement) {
-    console.log({title})
-    return (
-      <Card className="w-96 md:w-2/3 lg:w-3/4 xl:w-4/5" key={key}>
-        <List>
-          <ListItem className="mb-4">
+
+
+
+  return (
+    <Card className="w-96 md:w-2/3 lg:w-3/4 xl:w-4/5" key={data.id}>
+      <List>
+        <ListItem>
+
+
+        <Link to={`/events/${data.id}`} className="flex-grow">
             <ListItemPrefix>
               <Avatar variant="circular" alt="candice" src="/img/face-1.jpg" />
             </ListItemPrefix>
-            <div>
               <Typography variant="h6" color="blue-gray">
-                {title}
+                {data.title}
               </Typography>
               <Typography variant="small" color="gray" className="font-normal">
-                {description}
+                {data.description}
               </Typography>
-            </div>
-          </ListItem>
-          {/* <ListItem>
+          </Link>
+
+          <ListItemSuffix >
+            <IconButton variant="text" color="blue-gray" onClick={handleOpen}>
+              <TrashIcon />
+            </IconButton>
+          </ListItemSuffix>
+        </ListItem>
+        {/* <ListItem>
             <ListItemPrefix>
               <Avatar variant="circular" alt="alexander" src="/img/face-2.jpg" />
             </ListItemPrefix>
@@ -57,7 +111,8 @@ key: string
               </Typography>
             </div>
           </ListItem> */}
-        </List>
-      </Card>
-    );
-  }
+      </List>
+      <DialogCustom handleOpen={handleOpen} open={open} id={data.id} handleDelete={handleDelete} title={data.title} />
+    </Card >
+  );
+}
