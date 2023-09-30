@@ -1,6 +1,7 @@
 import {
     Button,
     Card,
+    Checkbox,
     Input,
     Textarea,
     Typography,
@@ -14,7 +15,8 @@ export type formProps = {
         description: string | undefined,
         id: string | undefined,
         imageName: string | undefined,
-        image: File
+        image: File,
+        published: boolean
     }
     handleChange: (fieldName: FieldName) => (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void,
     handleFileChange: (event: ChangeEvent<HTMLInputElement>) => void,
@@ -50,30 +52,16 @@ export function EventForm(data: formProps) {
                         accept="image/*"
                         className="h-96 w-full rounded-lg object-cover object-center"
                     ></Input>
-                    {data.event.imageName && <img
+                    {data.event.imageName && data.event.imageName !== "undefined" ? <img
                         className="h-96 w-full rounded-lg object-cover object-center"
                         src={`http://localhost:8080/images/eventImages/${data.event.imageName}`}
                         alt="image"
-                    />}
+                    /> : ""}
                     <Input size="lg" label="Titolo" crossOrigin={undefined} value={data.event.title} onChange={(e) => data.handleChange('title')(e)} />
                     <Textarea size="lg" label="Descrizione" value={data.event.description} onChange={(e) => data.handleChange('description')(e)} />
                     {/* <Input type="password" size="lg" label="Password" crossOrigin={undefined} onChange={handleChange}/> */}
                 </div>
-                {/* <Checkbox   
-                    label={<Typography
-                        variant="small"
-                        color="gray"
-                        className="flex items-center font-normal"
-                    >
-                        I agree the
-                        <a
-                            href="#"
-                            className="font-medium transition-colors hover:text-gray-900"
-                        >
-                            &nbsp;Terms and Conditions
-                        </a>
-                    </Typography>}
-                    containerProps={{ className: "-ml-2.5" }} crossOrigin={undefined}          /> */}
+                <Checkbox label="Pubblica online" crossOrigin={undefined} checked={data.event.published} onChange={(e) => data.handleChange('published')(e)}/>
                 <Button className="mt-6" fullWidth type="submit">
                     {data.event.id === undefined ? 'Nuovo' : 'Modifica'}
                 </Button>

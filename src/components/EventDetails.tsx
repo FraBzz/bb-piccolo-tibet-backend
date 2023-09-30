@@ -60,9 +60,16 @@ export const EventDetails = () => {
   };
 
   const handleChange = (fieldName: FieldName) => (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    let value: string | boolean;
+    if ((e.target as HTMLInputElement).type === 'checkbox') {
+        value = (e.target as HTMLInputElement).checked;
+    } else {
+        value = e.target.value;
+    }
+    
     setEvent((prevEvent) => ({
       ...prevEvent,
-      [fieldName]: e.target.value,
+      [fieldName]: value,
     }));
     console.log({event})
   };
@@ -76,6 +83,7 @@ export const EventDetails = () => {
           ...event,
           title: event.title,
           description: event.description,
+          published: event.published,
           imageName: event.imageName,
           image: event.image
         };

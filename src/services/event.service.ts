@@ -30,9 +30,13 @@ class EventDataService {
     
         formData.append('title', event.title);
         formData.append('description', event.description);
-        // formData.append('published', String(event.published));
-        formData.append('imageName', event.image.name);
-        if (event.image) formData.append('image', event.image);
+        formData.append('published', String(event.published));
+        if (event.image) {
+            formData.append('image', event.image);
+            formData.append('imageName', event.image.name);
+        } else {
+            formData.append('imageName', event.imageName);
+        }
 
         console.log({formData})
 
@@ -54,9 +58,15 @@ class EventDataService {
     
         formData.append('title', event.title);
         formData.append('description', event.description);
-        // formData.append('published', String(event.published));
-        formData.append('imageName', event.image.name);
-        if (event.image) formData.append('image', event.image);
+        formData.append('published', String(event.published));
+        if (event.image) {
+            formData.append('image', event.image);
+            formData.append('imageName', event.image.name);
+        } else {
+            formData.append('imageName', event.imageName);
+        }
+
+        console.log({formData})
 
         const res = await fetch(`http://localhost:8080/api/events/${eventId}`, {
             method: 'PUT',

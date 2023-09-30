@@ -8,7 +8,7 @@ export type props = {
     updatedAt: string,
     published: boolean,
     imageName: string,
-    image: File
+    image: File | undefined
 }
 
 export const EventSchema = z.object({

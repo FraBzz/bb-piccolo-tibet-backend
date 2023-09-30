@@ -72,7 +72,12 @@ export function ListWithAvatar(data: listElement) {
               <Typography variant="h4" color="blue-gray" className="text-center mb-2">
                 {data.title}
               </Typography>
+              {
+              data.imageName && data.imageName !== "undefined" ? 
               <Avatar variant="rounded" alt="candice" size="xxl" src={`http://localhost:8080/images/eventImages/${data.imageName}`} className="mb-4" />
+              : ""
+              }
+              
               {/* <Typography variant="small" color="gray" className="font-normal text-center">
                 {data.description}
               </Typography> */}
