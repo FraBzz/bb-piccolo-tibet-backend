@@ -4,7 +4,6 @@ import {
   IconButton,
   List,
   ListItem,
-  ListItemPrefix,
   ListItemSuffix,
   Typography
 } from "@material-tailwind/react";
@@ -18,6 +17,7 @@ export type listElement = {
   title: string,
   description: string,
   id: string,
+  imageName: string,
   handleMessage: (type: string, message: string) => void,
   handleList: (id: string) => void
 }
@@ -47,13 +47,13 @@ export function ListWithAvatar(data: listElement) {
   const handleOpen = () => setOpen(!open);
 
   const handleDelete = async () => {
-    if(data.id !== undefined){
+    if (data.id !== undefined) {
       try {
         handleOpen();
         const res: responseModel = await eventService.delete(data.id);
         data.handleMessage("success", res.message)
         data.handleList(data.id)
-      } catch(err: any){
+      } catch (err: any) {
         data.handleMessage("error", err.message)
       }
     }
@@ -67,17 +67,18 @@ export function ListWithAvatar(data: listElement) {
         <ListItem>
 
 
-        <Link to={`/events/${data.id}`} className="flex-grow">
-            <ListItemPrefix>
-              <Avatar variant="circular" alt="candice" src="/img/face-1.jpg" />
-            </ListItemPrefix>
-              <Typography variant="h6" color="blue-gray">
+          <Link to={`/events/${data.id}`} className="flex-grow">
+            <div className="flex flex-col items-center justify-center">
+              <Typography variant="h4" color="blue-gray" className="text-center mb-2">
                 {data.title}
               </Typography>
-              <Typography variant="small" color="gray" className="font-normal">
+              <Avatar variant="rounded" alt="candice" size="xxl" src={`http://localhost:8080/images/eventImages/${data.imageName}`} className="mb-4" />
+              {/* <Typography variant="small" color="gray" className="font-normal text-center">
                 {data.description}
-              </Typography>
+              </Typography> */}
+            </div>
           </Link>
+
 
           <ListItemSuffix >
             <IconButton variant="text" color="blue-gray" onClick={handleOpen}>

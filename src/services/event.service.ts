@@ -11,6 +11,7 @@ class EventDataService {
     async getById(eventId: string | undefined): Promise<EventModel> {
         const res = await fetch(`http://localhost:8080/api/events/${eventId}`);
         const data = await res.json();
+        console.log({data})
         return data;
     }
 
@@ -24,26 +25,42 @@ class EventDataService {
 
     async create(event: EventModel): Promise<responseModel> {
         console.log("create", JSON.stringify(event))
+
+        const formData = new FormData();
+    
+        formData.append('title', event.title);
+        formData.append('description', event.description);
+        // formData.append('published', String(event.published));
+        formData.append('imageName', event.image.name);
+        if (event.image) formData.append('image', event.image);
+
+        console.log({formData})
+
         const res = await fetch(`http://localhost:8080/api/events/`, {
             method: 'POST',
-            headers: {
-                "Content-Type": "application/json",
-                // 'Content-Type': 'application/x-www-form-urlencoded',
-              },
-            body: JSON.stringify(event)
+            // headers: {
+            //     "Content-Type": "application/json",
+            //     // 'Content-Type': 'application/x-www-form-urlencoded',
+            //   },
+            body: formData
         });
         return res.json();
     }
 
     async update(eventId: string | undefined, event: EventModel): Promise<responseModel> {
         console.log("update", JSON.stringify(event))
+
+        const formData = new FormData();
+    
+        formData.append('title', event.title);
+        formData.append('description', event.description);
+        // formData.append('published', String(event.published));
+        formData.append('imageName', event.image.name);
+        if (event.image) formData.append('image', event.image);
+
         const res = await fetch(`http://localhost:8080/api/events/${eventId}`, {
             method: 'PUT',
-            headers: {
-                "Content-Type": "application/json",
-                // 'Content-Type': 'application/x-www-form-urlencoded',
-              },
-            body: JSON.stringify(event)
+            body: formData
         });
         return res.json();
     }

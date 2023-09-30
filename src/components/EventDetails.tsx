@@ -12,6 +12,8 @@ export type props = {
       title: string | undefined,
       description: string | undefined,
       id: string | undefined,
+      imageName: string | undefined,
+      image: File | undefined
   }
   handleChange: (fieldName: FieldName) => (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void,
   handleSubmit: () => void,
@@ -20,7 +22,7 @@ export type props = {
 }
 
 export const EventDetails = () => {
-  const [event, setEvent] = useState<EventModel>({ title: '', description: '' } as EventModel);
+  const [event, setEvent] = useState<EventModel>({ title: '', description: '', imageName: '', image: new File([], "placeholder.txt") } as EventModel);
   const [success, setSuccess] = useState<string>('');
   const [error, setError] = useState<string>('');
   const { eventId } = useParams<{ eventId: string }>();
@@ -39,14 +41,32 @@ export const EventDetails = () => {
     };
 
     fetchData();
+    
+    console.log({event})
   }, [eventId]);
+
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    console.log("entra")
+    const file = e.target.files?.[0];
+    console.log({file})
+    if (file) {
+      console.log("file")
+      setEvent((prevEvent) => ({
+        ...prevEvent,
+        image: file,
+      }));
+      console.log({event})
+    }
+  };
 
   const handleChange = (fieldName: FieldName) => (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setEvent((prevEvent) => ({
       ...prevEvent,
       [fieldName]: e.target.value,
     }));
+    console.log({event})
   };
+  
 
   const handleSubmit = async () => {
     if (event) {
@@ -56,9 +76,16 @@ export const EventDetails = () => {
           ...event,
           title: event.title,
           description: event.description,
+          imageName: event.imageName,
+          image: event.image
         };
 
         console.log({ updatedEvent });
+
+  //       const formData = new FormData()
+  // formData.append("image", event.imageName)
+  // formData.append("title", event.title)
+  // formData.append("description", event.description)
 
         let res: responseModel;
         if (!event.id) {
@@ -84,7 +111,7 @@ export const EventDetails = () => {
 
   return (
     <div className="flex justify-center p-4">
-      <EventForm event={event} handleChange={handleChange} handleSubmit={handleSubmit} success={success} error={error} />
+      <EventForm event={event} handleChange={handleChange} handleFileChange={handleFileChange} handleSubmit={handleSubmit} success={success} error={error} />
     </div>
   );
 };
