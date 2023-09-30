@@ -50,11 +50,6 @@ export const EventsList = () => {
 
     const eventService = new EventDataService;
 
-    // const body = {
-    //     username: "pietro.roversi@evoluzionetelematica.it",
-    //     password: "456Evoltel123$"
-    // }
-
     useEffect(() => {
         setSuccess("");
         setError("");
