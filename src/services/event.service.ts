@@ -37,6 +37,7 @@ class EventDataService {
         } else {
             formData.append('imageName', event.imageName);
         }
+        formData.append('finishDate', event.finishDate)
 
         console.log({formData})
 
@@ -65,6 +66,7 @@ class EventDataService {
         } else {
             formData.append('imageName', event.imageName);
         }
+        formData.append('finishDate', event.finishDate)
 
         console.log({formData})
 

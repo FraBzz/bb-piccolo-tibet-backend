@@ -99,7 +99,7 @@ export const EventsList = () => {
 
                     return (
                         <div className="flex justify-center p-4" key={item.id}>
-                            <ListWithAvatar title={item.title} description={item.description} id={item.id} imageName={item.imageName} handleMessage={handleMessage} handleList={handleList} />
+                            <ListWithAvatar title={item.title} description={item.description} id={item.id} imageName={item.imageName} finishDate={item.finishDate} handleMessage={handleMessage} handleList={handleList} />
                         </div>
                     )
                 })

@@ -8,7 +8,8 @@ export type props = {
     updatedAt: string,
     published: boolean,
     imageName: string,
-    image: File | undefined
+    image: File | undefined,
+    finishDate: string
 }
 
 export const EventSchema = z.object({
@@ -19,7 +20,8 @@ export const EventSchema = z.object({
     updatedAt: z.string(),
     published: z.boolean(),
     imageName: z.string(),
-    image: z.instanceof(File)
+    image: z.instanceof(File),
+    finishDate: z.string()
 })
 
 export type EventModel = z.infer<typeof EventSchema>

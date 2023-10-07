@@ -13,7 +13,8 @@ export type props = {
       description: string | undefined,
       id: string | undefined,
       imageName: string | undefined,
-      image: File | undefined
+      image: File | undefined,
+      finishDate: string | undefined
   }
   handleChange: (fieldName: FieldName) => (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void,
   handleSubmit: () => void,
@@ -22,7 +23,7 @@ export type props = {
 }
 
 export const EventDetails = () => {
-  const [event, setEvent] = useState<EventModel>({ title: '', description: '', imageName: '', image: new File([], "placeholder.txt") } as EventModel);
+  const [event, setEvent] = useState<EventModel>({ title: '', description: '', imageName: '', image: new File([], "placeholder.txt"), finishDate: '' } as EventModel);
   const [success, setSuccess] = useState<string>('');
   const [error, setError] = useState<string>('');
   const { eventId } = useParams<{ eventId: string }>();
@@ -73,6 +74,14 @@ export const EventDetails = () => {
     }));
     console.log({event})
   };
+
+  const handleDateChange = (fieldName: string) => (newDate: string) => {
+    console.log({newDate})
+    setEvent((prevEvent) => ({
+      ...prevEvent,
+      [fieldName]: newDate,
+    }));
+  };
   
 
   const handleSubmit = async () => {
@@ -85,7 +94,8 @@ export const EventDetails = () => {
           description: event.description,
           published: event.published,
           imageName: event.imageName,
-          image: event.image
+          image: event.image,
+          finishDate: event.finishDate
         };
 
         console.log({ updatedEvent });
@@ -119,7 +129,7 @@ export const EventDetails = () => {
 
   return (
     <div className="flex justify-center p-4">
-      <EventForm event={event} handleChange={handleChange} handleFileChange={handleFileChange} handleSubmit={handleSubmit} success={success} error={error} />
+      <EventForm event={event} handleChange={handleChange} handleFileChange={handleFileChange} handleDateChange={handleDateChange} handleSubmit={handleSubmit} success={success} error={error} />
     </div>
   );
 };

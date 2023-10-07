@@ -13,11 +13,13 @@ import { responseModel } from "../models/response.model";
 import EventDataService from "../services/event.service";
 import { DialogCustom } from "./DialogCustom";
 
+
 export type listElement = {
   title: string,
   description: string,
   id: string,
   imageName: string,
+  finishDate: string,
   handleMessage: (type: string, message: string) => void,
   handleList: (id: string) => void
 }
@@ -59,6 +61,9 @@ export function ListWithAvatar(data: listElement) {
     }
   }
 
+  console.log(Date.parse(data.finishDate))
+  console.log(Date.now())
+  console.log(Date.parse(data.finishDate) < Date.now())
 
 
   return (
@@ -77,6 +82,11 @@ export function ListWithAvatar(data: listElement) {
               <Avatar variant="rounded" alt="candice" size="xxl" src={`http://localhost:8080/images/eventImages/${data.imageName}`} className="mb-4" />
               : ""
               }
+
+<p className="block font-sans text-base font-light leading-relaxed text-inherit antialiased">
+  
+                {Date.parse(data.finishDate) < Date.now() ? 'Evento passato' : 'Pubblicato online'}
+            </p>
               
               {/* <Typography variant="small" color="gray" className="font-normal text-center">
                 {data.description}

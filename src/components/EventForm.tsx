@@ -7,7 +7,9 @@ import {
     Typography,
 } from "@material-tailwind/react";
 import { ChangeEvent, FormEvent } from "react";
+import { DatePickerInput } from "../ui/DatePicker";
 import { FieldName } from "./EventDetails";
+
 
 export type formProps = {
     event: {
@@ -16,21 +18,26 @@ export type formProps = {
         id: string | undefined,
         imageName: string | undefined,
         image: File,
-        published: boolean
+        published: boolean,
+        finishDate: string | undefined
     }
     handleChange: (fieldName: FieldName) => (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void,
     handleFileChange: (event: ChangeEvent<HTMLInputElement>) => void,
+    handleDateChange: (fieldName: FieldName) => (date: string) => void
     handleSubmit: () => void,
     success: string,
     error: string
 }
 
 export function EventForm(data: formProps) {
+
     const handleFormSubmit = (e: FormEvent) => {
         e.preventDefault();
         // Chiama la funzione di handle submit fornita come prop
         data.handleSubmit();
     };
+
+
 
     return (
         <Card color="transparent" shadow={false} key={data.event.id}>
@@ -61,7 +68,14 @@ export function EventForm(data: formProps) {
                     <Textarea size="lg" label="Descrizione" value={data.event.description} onChange={(e) => data.handleChange('description')(e)} />
                     {/* <Input type="password" size="lg" label="Password" crossOrigin={undefined} onChange={handleChange}/> */}
                 </div>
-                <Checkbox label="Pubblica online" crossOrigin={undefined} checked={data.event.published} onChange={(e) => data.handleChange('published')(e)}/>
+                {/* <DatePicker 
+    label="Data fine evento"
+    value={data.event.finishDate ? new Date(data.event.finishDate) : null}
+    onChange={data.handleDateChange('finishDate')}
+/> */}
+
+                <DatePickerInput value={data.event.finishDate} onDateChange={(e) => data.handleDateChange('finishDate')(e)} />
+                <Checkbox label="Pubblica online" crossOrigin={undefined} checked={data.event.published} onChange={(e) => data.handleChange('published')(e)} />
                 <Button className="mt-6" fullWidth type="submit">
                     {data.event.id === undefined ? 'Nuovo' : 'Modifica'}
                 </Button>
