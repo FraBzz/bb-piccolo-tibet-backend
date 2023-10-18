@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Card,
   IconButton,
   List,
@@ -10,16 +9,14 @@ import {
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { responseModel } from "../models/response.model";
-import EventDataService from "../services/event.service";
+import PageDataService from "../services/page.service";
 import { DialogCustom } from "./DialogCustom";
 
 
 export type listElement = {
   title: string,
   description: string,
-  id: string,
-  imageName: string,
-  finishDate: string,
+  id: string
   handleMessage: (type: string, message: string) => void,
   handleList: (id: string) => void
 }
@@ -41,8 +38,8 @@ function TrashIcon() {
   );
 }
 
-export function ListWithAvatar(data: listElement) {
-  const eventService = new EventDataService();
+export function NormalList(data: listElement) {
+  const pageService = new PageDataService();
 
   const [open, setOpen] = useState(false);
 
@@ -52,7 +49,7 @@ export function ListWithAvatar(data: listElement) {
     if (data.id !== undefined) {
       try {
         handleOpen();
-        const res: responseModel = await eventService.delete(data.id);
+        const res: responseModel = await pageService.delete(data.id);
         data.handleMessage("success", res.message)
         data.handleList(data.id)
       } catch (err: any) {
@@ -61,31 +58,20 @@ export function ListWithAvatar(data: listElement) {
     }
   }
 
-  console.log(Date.parse(data.finishDate))
-  console.log(Date.now())
-  console.log(Date.parse(data.finishDate) < Date.now())
-
-
   return (
     <Card className="w-96 md:w-2/3 lg:w-3/4 xl:w-4/5" key={data.id}>
       <List>
         <ListItem>
 
 
-          <Link to={`/events/${data.id}`} className="flex-grow">
+          <Link to={`/pages/${data.id}`} className="flex-grow">
             <div className="flex flex-col items-center justify-center">
               <Typography variant="h4" color="blue-gray" className="text-center mb-2">
                 {data.title}
               </Typography>
-              {
-              data.imageName && data.imageName !== "undefined" ? 
-              <Avatar variant="rounded" alt="candice" size="xxl" src={`http://localhost:8080/images/eventImages/${data.imageName}`} className="mb-4" />
-              : ""
-              }
 
 <p className="block font-sans text-base font-light leading-relaxed text-inherit antialiased">
   
-                {Date.parse(data.finishDate) < Date.now() ? 'Evento passato' : 'Pubblicato online'}
             </p>
               
               {/* <Typography variant="small" color="gray" className="font-normal text-center">

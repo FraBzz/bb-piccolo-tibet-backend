@@ -1,12 +1,12 @@
-import { Button, Typography } from "@material-tailwind/react"
-import { useEffect, useState } from "react"
-import { Link, useLocation } from "react-router-dom"
-import { EventModel } from "../models/event.model"
-import EventDataService from "../services/event.service"
-import { ListWithAvatar } from "./ListWithAvatar"
+import { Button, Typography } from "@material-tailwind/react";
+import { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { PageModel } from "../models/page.model";
+import PageDataService from "../services/page.service";
+import { NormalList } from "./NormalList";
 
-export const EventsList = () => {
-    const [events, setEvents] = useState<EventModel[]>([])
+export const PagesList = () => {
+    const [pages, setPages] = useState<PageModel[]>([])
     const [success, setSuccess] = useState<string>('');
     const [error, setError] = useState<string>('');
     const {state} = useLocation()
@@ -21,20 +21,20 @@ export const EventsList = () => {
         }
     };
 
-    const handleList = (eventId: string) => {
-        const updateEvents = events.filter(item => item.id !== eventId);
-        setEvents(updateEvents);
+    const handleList = (pageId: string) => {
+        const updatepages = pages.filter(item => item.id !== pageId);
+        setPages(updatepages);
     }
 
-    const eventService = new EventDataService;
+    const pageservice = new PageDataService;
 
     useEffect(() => {
         setSuccess("");
         setError("");
 
         const e = async () => {
-            const a = await eventService.getAll();
-            setEvents(a);
+            const a = await pageservice.getAll();
+            setPages(a);
         }
 
         console.log({state})
@@ -48,7 +48,7 @@ export const EventsList = () => {
     return (
         <>
             <div className="flex justify-end p-4">
-                <Link to={`/events/new`}>
+                <Link to={`/pages/new`}>
                     <Button className="mr-4 md:mr-32">Nuovo</Button>
                 </Link>
             </div>
@@ -62,12 +62,12 @@ export const EventsList = () => {
                 </Typography>
             </div>
             {
-                events.map(item => {
+                pages.map(item => {
                     console.log(item.id)
 
                     return (
                         <div className="flex justify-center p-4" key={item.id}>
-                            <ListWithAvatar title={item.title} description={item.description} id={item.id} imageName={item.imageName} finishDate={item.finishDate} handleMessage={handleMessage} handleList={handleList} />
+                            <NormalList title={item.title} description={item.description} id={item.id} handleMessage={handleMessage} handleList={handleList} />
                         </div>
                     )
                 })

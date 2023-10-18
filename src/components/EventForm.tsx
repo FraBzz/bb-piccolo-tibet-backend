@@ -42,7 +42,7 @@ export function EventForm(data: formProps) {
     return (
         <Card color="transparent" shadow={false} key={data.event.id}>
             <Typography variant="h4" color="blue-gray">
-                Modifica evento
+            {data.event.id === undefined ? 'Crea evento' : 'Modifica evento'}
             </Typography>
             {/* <Typography color="gray" className="mt-1 font-normal">
           Enter your details to register.
